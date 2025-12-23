@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Foot64 Terminal</title>
+
+<style>
+/* ===== BASE ===== */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    color: #00ff00;
+    font-family: "Courier New", monospace;
+    overflow: hidden;
+}
+
+/* ===== INTRO ===== */
+#intro {
+    position: fixed;
+    inset: 0;
+    background: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+#intro.hidden {
+    display: none;
+}
+
+#intro button {
+    margin-top: 20px;
+    background: black;
+    color: #00ff00;
+    border: 2px solid #00ff00;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* ===== HEADER ===== */
+#header {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 18px;
+}
+
+/* ===== ACTIONS BAR ===== */
+#actions {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    bottom: 10px;
+    width: 220px;
+    border: 2px solid #00ff00;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+#actions h3 {
+    text-align: center;
+    border-bottom: 2px solid #00ff00;
+    margin: 0;
+    padding-bottom: 5px;
+}
+
+#log {
+    margin-top: 10px;
+    font-size: 14px;
+    overflow-y: auto;
+    height: calc(100% - 40px);
+}
+
+/* ===== MAIN TERMINAL ===== */
+#terminal {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+input {
+    background: black;
+    color: #00ff00;
+    border: 2px solid #00ff00;
+    padding: 8px;
+    font-size: 16px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+    <div id="loading">Loading...</div>
+    <div id="warning" style="display:none; text-align:center;">
+        <p>If you are <b>NOT</b> a Staff Member do not continue!</p>
+        <button onclick="openTerminal()">Open</button>
+    </div>
+</div>
+
+<!-- HEADER -->
+<div id="header">Foot64 Terminal</div>
+
+<!-- ACTIONS BAR -->
+<div id="actions">
+    <h3>Actions</h3>
+    <div id="log"></div>
+</div>
+
+<!-- TERMINAL -->
+<div id="terminal">
+    <p>Enter Code:</p>
+    <input id="codeInput" placeholder="Enter code..." />
+</div>
+
+<script>
+/* ===== INTRO LOGIC (FIXED) ===== */
+setTimeout(() => {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("warning").style.display = "block";
+}, 5000);
+
+function openTerminal() {
+    document.getElementById("intro").classList.add("hidden");
+    logAction("Started Up");
+}
+
+/* ===== ACTION LOGGER ===== */
+function logAction(text) {
+    const log = document.getElementById("log");
+    const entry = document.createElement("div");
+    entry.textContent = text;
+    log.prepend(entry);
+}
+
+/* ===== CODE SYSTEM ===== */
+const codes = {
+    "035": "https://youtube.com",
+    "Peak": "https://youtu.be/pOzLZoC_xTY",
+    "005": "https://youtu.be/a2OEN4uHg_A",
+    "003": "https://youtu.be/0NSVrBmI41w",
+    "Leph": "https://youtu.be/sCzfeYz31ic",
+    "0.7": "https://youtu.be/-faTSqjc92g",
+    "0.7 2": "https://youtu.be/W0M0xVfv_2g"
+};
+
+document.getElementById("codeInput").addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+        const code = e.target.value.trim();
+        if (codes[code]) {
+            logAction(`"${code}" Accepted`);
+            window.location.href = codes[code];
+        } else {
+            logAction(`"${code}" Denied`);
+        }
+        e.target.value = "";
+    }
+});
+</script>
+
+</body>
+</html>

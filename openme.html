@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Foot64 Terminal</title>
+
+<!-- 8-bit style font -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        background-color: black;
+        color: #00ff66;
+        font-family: 'Press Start 2P', monospace;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Top-left terminal label */
+    #terminalTitle {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        font-size: 12px;
+        color: #00ff66;
+    }
+
+    /* Main terminal box */
+    #terminalBox {
+        border: 2px solid #00ff66;
+        width: 70%;
+        max-width: 700px;
+        margin: 120px auto;
+        padding: 30px;
+        text-align: center;
+    }
+
+    input, button {
+        background: black;
+        border: 2px solid #00ff66;
+        color: #00ff66;
+        font-family: 'Press Start 2P', monospace;
+        padding: 10px;
+        font-size: 12px;
+        margin-top: 15px;
+        outline: none;
+    }
+
+    button:hover {
+        background: #00ff66;
+        color: black;
+        cursor: pointer;
+    }
+
+    #error {
+        color: #00ff66;
+        margin-top: 15px;
+    }
+
+    #videoContainer {
+        display: none;
+        margin-top: 30px;
+    }
+
+    /* CRT flicker effect */
+    body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(0,255,102,0.03),
+            rgba(0,255,102,0.03) 1px,
+            transparent 1px,
+            transparent 3px
+        );
+        pointer-events: none;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="terminalTitle">Foot64 Terminal</div>
+
+<div id="terminalBox">
+    <p>AUTHORIZATION REQUIRED</p>
+    <p>ENTER ACCESS CODE</p>
+
+    <input type="password" id="password">
+    <br>
+    <button onclick="checkPassword()">EXECUTE</button>
+
+    <p id="error"></p>
+
+    <div id="videoContainer">
+        <iframe
+            id="secretVideo"
+            width="560"
+            height="315"
+            src=""
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+
+<script>
+    const correctPassword = "035"; // you already know how 😉
+    const videoURL = "https://www.youtube.com/embed/QS-AeoMsm3o?autoplay=1";
+
+    function checkPassword() {
+        const input = document.getElementById("password").value;
+
+        if (input === correctPassword) {
+            document.getElementById("error").textContent = "ACCESS GRANTED";
+            document.getElementById("videoContainer").style.display = "block";
+            document.getElementById("secretVideo").src = videoURL;
+        } else {
+            document.getElementById("error").textContent = "ACCESS DENIED";
+        }
+    }
+</script>
+
+</body>
+</html>

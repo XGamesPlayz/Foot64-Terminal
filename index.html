@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Foot64 Terminal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    background: black;
+    color: #00ff66;
+    font-family: 'Press Start 2P', monospace;
+}
+
+/* Layout */
+#container {
+    display: flex;
+    height: 100vh;
+}
+
+/* ACTIONS BAR (LEFT) */
+#actionsBar {
+    width: 25%;
+    border-right: 2px solid #00ff66;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+#actionsTitle {
+    text-align: center;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #00ff66;
+    padding-bottom: 6px;
+}
+
+#actionsContent {
+    font-size: 10px;
+    overflow-y: auto;
+    height: calc(100% - 40px);
+}
+
+.actionLine {
+    margin-bottom: 6px;
+    opacity: 0.9;
+}
+
+/* MAIN TERMINAL (RIGHT) */
+#main {
+    width: 75%;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+#terminalTitle {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    font-size: 12px;
+}
+
+input, button {
+    background: black;
+    border: 2px solid #00ff66;
+    color: #00ff66;
+    font-family: 'Press Start 2P', monospace;
+    padding: 10px;
+    font-size: 12px;
+    margin-top: 15px;
+}
+
+button:hover {
+    background: #00ff66;
+    color: black;
+    cursor: pointer;
+}
+
+#videoContainer {
+    margin-top: 25px;
+    display: none;
+}
+
+/* CRT Scanlines */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,255,102,0.03),
+        rgba(0,255,102,0.03) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<div id="terminalTitle">Foot64 Terminal</div>
+
+<div id="container">
+
+    <!-- ACTIONS BAR -->
+    <div id="actionsBar">
+        <div id="actionsTitle">ACTIONS</div>
+        <div id="actionsContent"></div>
+    </div>
+
+    <!-- MAIN TERMINAL -->
+    <div id="main">
+        <p>AUTHORIZATION REQUIRED</p>
+        <p>ENTER ACCESS CODE</p>
+
+        <input type="password" id="password">
+        <br>
+        <button onclick="checkPassword()">EXECUTE</button>
+
+        <p id="status"></p>
+
+        <div id="videoContainer">
+            <iframe id="secretVideo"
+                width="560"
+                height="315"
+                frameborder="0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const videos = {
+        "035": "https://www.youtube.com/embed/QS-AeoMsm3o?autoplay=1",
+        "Peak": "https://www.youtube.com/embed/pOzLZoC_xTY?autoplay=1",
+        "005": "https://www.youtube.com/embed/a2OEN4uHg_A?autoplay=1",
+        "003": "https://www.youtube.com/embed/0NSVrBmI41w?autoplay=1",
+        "Leph": "https://www.youtube.com/embed/sCzfeYz31ic?autoplay=1",
+        "0.7": "https://www.youtube.com/embed/-faTSqjc92g?autoplay=1",
+        "0.7 2": "https://www.youtube.com/embed/W0M0xVfv_2g?autoplay=1"
+    };
+
+    const log = document.getElementById("actionsContent");
+    const status = document.getElementById("status");
+    const iframe = document.getElementById("secretVideo");
+    const videoBox = document.getElementById("videoContainer");
+
+    function logAction(text) {
+        const line = document.createElement("div");
+        line.className = "actionLine";
+        line.textContent = "> " + text;
+        log.appendChild(line);
+        log.scrollTop = log.scrollHeight;
+    }
+
+    // Startup logs
+    logAction("SYSTEM STARTED");
+    logAction("ACTIONS MODULE ONLINE");
+
+    window.checkPassword = function () {
+        const input = document.getElementById("password").value.trim();
+
+        if (videos[input]) {
+            status.textContent = "ACCESS GRANTED";
+            iframe.src = videos[input];
+            videoBox.style.display = "block";
+            logAction(`CODE "${input}" ACCEPTED`);
+        } else {
+            status.textContent = "ACCESS DENIED";
+            iframe.src = "";
+            videoBox.style.display = "none";
+            logAction(`CODE "${input}" DENIED`);
+        }
+    };
+
+});
+</script>
+
+</body>
+</html>
